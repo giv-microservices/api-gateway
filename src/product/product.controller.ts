@@ -13,7 +13,7 @@ import {
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, } from 'rxjs';
 import { PaginationDto } from 'src/common/dto';
-import { PRODUCT_SERVICE } from 'src/common/config';
+import { PRODUCT_SERVICE } from 'src/config';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 

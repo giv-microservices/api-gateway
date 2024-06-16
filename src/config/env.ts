@@ -6,28 +6,33 @@ interface EnvVars {
   PORT: number;
   PRODUCTS_MICROSERVICE_HOST: string;
   PRODUCTS_MICROSERVICE_PORT: number;
+  ORDER_MICROSERVICE_HOST : string;
+  ORDER_MICROSERVICE_PORT : number;
 }
 
 const envsSchema = joi.object({
   PORT: joi.number().required(),
   PRODUCTS_MICROSERVICE_HOST: joi.string().required(),
   PRODUCTS_MICROSERVICE_PORT: joi.number().required(),
-
+  ORDER_MICROSERVICE_HOST: joi.string().required(),
+  ORDER_MICROSERVICE_PORT: joi.number().required(),
 })
-.unknown(true);
+  .unknown(true);
 
-const { error, value } = envsSchema.validate( process.env );
+const { error, value } = envsSchema.validate(process.env);
 
 
-if ( error ) {
-  throw new Error(`Config validation error: ${ error.message }`);
+if (error) {
+  throw new Error(`Config validation error: ${error.message}`);
 }
 
-const envVars:EnvVars = value;
+const envVars: EnvVars = value;
 
 
 export const env = {
   port: envVars.PORT,
   productsMicroserviceHost: envVars.PRODUCTS_MICROSERVICE_HOST,
   productsMicroservicePort: envVars.PRODUCTS_MICROSERVICE_PORT,
+  orderMicroserviceHost: envVars.ORDER_MICROSERVICE_HOST,
+  orderMicroservicePort: envVars.ORDER_MICROSERVICE_PORT,
 };

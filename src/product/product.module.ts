@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ProductsController } from './product.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PRODUCT_SERVICE, env } from 'src/common/config';
+import { PRODUCT_SERVICE, env } from 'src/config';
 
 
 @Module({
