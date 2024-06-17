@@ -8,3 +8,8 @@
 Authentication and Authorization: Use guards for authentication and authorization to have fine-grained control over route access.
 Pre-processing: Use middleware for tasks that need to occur before route handlers, like request logging, body parsing, and simple authentication checks.
 Post-processing and Transformation: Use interceptors for response transformation, logging execution times, and other tasks that require wrapping the request-response lifecycle.
+
+
+
+NATS SERVER
+docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats

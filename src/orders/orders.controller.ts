@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Inject, Query, ParseUUIDPipe } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { ORDER_SERVICE } from 'src/config';
+import { NATS_SERVICE } from 'src/config';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PaginationDto } from 'src/common/dto';
 import { firstValueFrom } from 'rxjs';
@@ -8,12 +8,12 @@ import { OrderPaginationDto, StatusDto } from './dto';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(@Inject(ORDER_SERVICE) private readonly orderClient: ClientProxy,) { }
+  constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy,) { }
 
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto) {
     try {
-      return firstValueFrom(this.orderClient.send(
+      return firstValueFrom(this.client.send(
         { cmd: 'create_order' },
         createOrderDto,
       ))
@@ -25,7 +25,7 @@ export class OrdersController {
 
   @Get()
   findAll(@Query() orderPaginationDto: OrderPaginationDto) {
-    return this.orderClient.send({ cmd: 'find_all_orders' }, orderPaginationDto);
+    return this.client.send({ cmd: 'find_all_orders' }, orderPaginationDto);
   }
 
   @Get(':status')
@@ -35,7 +35,7 @@ export class OrdersController {
   ) {
     try {
 
-      return this.orderClient.send({ cmd: 'find_all_orders' }, {
+      return this.client.send({ cmd: 'find_all_orders' }, {
         ...paginationDto,
         status: statusDto.status,
       });
@@ -49,7 +49,7 @@ export class OrdersController {
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     try {
       const order = await firstValueFrom(
-        this.orderClient.send({ cmd: 'find_order_by_id' }, { id })
+        this.client.send({ cmd: 'find_order_by_id' }, { id })
       );
 
       return order;
@@ -65,7 +65,7 @@ export class OrdersController {
     @Body() statusDto: StatusDto,
   ) {
     try {
-      return this.orderClient.send({ cmd: 'update_order_status' }, { id, status: statusDto.status })
+      return this.client.send({ cmd: 'update_order_status' }, { id, status: statusDto.status })
     } catch (error) {
       throw new RpcException(error);
     }
