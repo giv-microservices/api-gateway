@@ -1,3 +1,7 @@
+// este guard verifica que venga el token, que sea valido 
+// y si lo es abstract;ade su informacin desencritada y verificada por el micro servicio
+// en la request
+
 import {
     CanActivate,
     ExecutionContext,
