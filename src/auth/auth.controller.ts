@@ -7,6 +7,7 @@ import { catchError } from 'rxjs';
 import { AuthGuard } from './guard/auth.guard';
 import { User } from './decorators/user.decorator';
 import { CurrentRequestUser } from './types/current-resquest-user.type';
+import { Token } from './decorators/token.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -30,15 +31,14 @@ export class AuthController {
     );;
   }
 
-  @UseGuards(AuthGuard)
-  @Get('/verify')
-  verify(@User() user: CurrentRequestUser) {
-    return this.client.send('auth.verify.user', {user}).pipe(
-      catchError((error) => {
-        throw new RpcException({ status: 400, message: error.message });
-      })
-    );;
-  }
 
+  @UseGuards( AuthGuard )
+  @Get('verify')
+  verifyToken( @User() user: CurrentRequestUser, @Token() token: string  ) {
+    // si el guard AuthGuard añade el usuario y el token a la request
+    // entonces podemos extraerlos con los decoradores User y Token
+    // eso es lo que retornamos aqui
+    return { user, token }
+  }
 
 }
